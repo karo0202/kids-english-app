@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Confetti from 'react-confetti';
+import { Link } from 'react-router-dom';
 
 export default function AnimatedHome() {
   const { t } = useTranslation();
@@ -201,30 +202,28 @@ export default function AnimatedHome() {
               { icon: '🎵', text: t('audio'), color: 'from-orange-400 to-orange-600', delay: 1.6, path: '/audio' },
               { icon: '🏆', text: t('rewards'), color: 'from-yellow-400 to-yellow-600', delay: 1.7, path: '/rewards' }
             ].map((lesson, index) => (
-              <motion.button
-                key={index}
-                className={`w-full py-4 px-6 rounded-2xl text-white font-bold text-lg shadow-lg transform transition-all duration-200 bg-gradient-to-r ${lesson.color} hover:shadow-xl hover:scale-105 active:scale-95 border-2 border-white/20`}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: lesson.delay, duration: 0.6, type: "spring" }}
-                whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-                }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  handleButtonClick();
-                  window.location.href = lesson.path;
-                }}
-              >
-                <motion.span
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+              <Link to={lesson.path} key={index} style={{ textDecoration: 'none' }}>
+                <motion.button
+                  className={`w-full py-4 px-6 rounded-2xl text-white font-bold text-lg shadow-lg transform transition-all duration-200 bg-gradient-to-r ${lesson.color} hover:shadow-xl hover:scale-105 active:scale-95 border-2 border-white/20`}
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: lesson.delay, duration: 0.6, type: "spring" }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleButtonClick}
                 >
-                  {lesson.icon}
-                </motion.span>
-                {' '}{lesson.text}
-              </motion.button>
+                  <motion.span
+                    animate={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                  >
+                    {lesson.icon}
+                  </motion.span>
+                  {' '}{lesson.text}
+                </motion.button>
+              </Link>
             ))}
           </div>
         </motion.div>

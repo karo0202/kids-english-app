@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import './App.css';
@@ -16,6 +16,48 @@ import WritingBook from './components/WritingBook';
 
 // Import i18n configuration
 import './i18n';
+
+// Theme context and logic
+const themes = ['light', 'dark', 'eye'] as const;
+type Theme = typeof themes[number];
+const ThemeContext = createContext<{theme: Theme, setTheme: (t: Theme) => void}>({theme: 'light', setTheme: () => {}});
+
+function useTheme() {
+  return useContext(ThemeContext);
+}
+
+function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(() => {
+    const saved = localStorage.getItem('theme');
+    return (saved === 'dark' || saved === 'eye') ? saved : 'light';
+  });
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div className={`theme-${theme}`}>{children}</div>
+    </ThemeContext.Provider>
+  );
+}
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'eye' : 'light';
+  const icon = theme === 'light' ? '🌞' : theme === 'dark' ? '🌙' : '🟡';
+  const label = theme === 'light' ? 'Light Mode' : theme === 'dark' ? 'Dark Mode' : 'Eye Comfort';
+  return (
+    <button
+      className="ml-4 px-3 py-2 rounded-full font-bold text-lg bg-white/20 hover:bg-white/30 transition-all shadow-lg"
+      onClick={() => setTheme(nextTheme as Theme)}
+      title={`Switch to ${nextTheme.charAt(0).toUpperCase() + nextTheme.slice(1)} Mode`}
+      aria-label="Toggle theme"
+    >
+      <span className="mr-1">{icon}</span> {label}
+    </button>
+  );
+}
 
 function Navigation() {
   const { t } = useTranslation();
@@ -34,7 +76,7 @@ function Navigation() {
 
   return (
     <motion.nav 
-      className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-2xl"
+      className={`bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white shadow-2xl theme-navbar`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, type: "spring" }}
@@ -69,7 +111,7 @@ function Navigation() {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center">
             <div className="ml-10 flex items-baseline space-x-4">
               {navItems.map((item, index) => (
                 <motion.div
@@ -101,18 +143,16 @@ function Navigation() {
                 </motion.div>
               ))}
             </div>
-          </div>
-
-          {/* Language Switcher */}
-          <div className="hidden md:block">
-            <LanguageSwitcher />
+            <ThemeToggle />
+            <div className="ml-4"><LanguageSwitcher /></div>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
+            <ThemeToggle />
             <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200"
+              className="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200 ml-2"
               whileTap={{ scale: 0.95 }}
             >
               <motion.div
@@ -254,64 +294,66 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navigation />
-        <AppContent />
-        
-        {/* Floating Action Button */}
-        <motion.div
-          className="fixed bottom-6 right-6 z-50"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
-        >
-          <motion.button
-            className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            animate={{ 
-              scale: [1, 1.05, 1],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-            onClick={() => {
-              // Add fun interaction here
-              const utterance = new SpeechSynthesisUtterance("Great job learning!");
-              utterance.rate = 0.8;
-              utterance.pitch = 1.2;
-              speechSynthesis.speak(utterance);
-            }}
+    <ThemeProvider>
+      <Router>
+        <div className="App">
+          <Navigation />
+          <AppContent />
+          
+          {/* Floating Action Button */}
+          <motion.div
+            className="fixed bottom-6 right-6 z-50"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
           >
-            🎉
-          </motion.button>
-        </motion.div>
+            <motion.button
+              className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileTap={{ scale: 0.9 }}
+              animate={{ 
+                scale: [1, 1.05, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+              onClick={() => {
+                // Add fun interaction here
+                const utterance = new SpeechSynthesisUtterance("Great job learning!");
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                speechSynthesis.speak(utterance);
+              }}
+            >
+              🎉
+            </motion.button>
+          </motion.div>
 
-        {/* Background Animation */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          {Array.from({ length: 20 }, (_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-20"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -100, 0],
-                opacity: [0.2, 0.8, 0.2],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
+          {/* Background Animation */}
+          <div className="fixed inset-0 pointer-events-none overflow-hidden">
+            {Array.from({ length: 20 }, (_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-20"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -100, 0],
+                  opacity: [0.2, 0.8, 0.2],
+                  scale: [1, 1.5, 1],
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </ThemeProvider>
   );
 }
 

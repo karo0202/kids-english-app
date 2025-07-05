@@ -274,3 +274,68 @@ textarea:focus {
     border: 2px solid #000;
   }
 }
+
+/* THEME SUPPORT */
+.theme-light {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #222;
+}
+.theme-light .theme-navbar {
+  background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+  color: #222;
+}
+.theme-light .card {
+  background: rgba(255,255,255,0.95);
+  color: #222;
+}
+
+.theme-dark {
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  color: #f3f3f3;
+}
+.theme-dark .theme-navbar {
+  background: linear-gradient(90deg, #232526 0%, #414345 100%);
+  color: #f3f3f3;
+}
+.theme-dark .card {
+  background: rgba(30,30,40,0.95);
+  color: #f3f3f3;
+}
+
+.theme-eye {
+  background: linear-gradient(135deg, #f6e7cb 0%, #b5c6e0 100%);
+  color: #3a2c13;
+}
+.theme-eye .theme-navbar {
+  background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
+  color: #3a2c13;
+}
+.theme-eye .card {
+  background: rgba(255, 245, 200, 0.95);
+  color: #3a2c13;
+}
+
+.theme-dark .btn-primary {
+  background: linear-gradient(45deg, #232526, #414345);
+  color: #f3f3f3;
+}
+.theme-eye .btn-primary {
+  background: linear-gradient(45deg, #ffe29f, #ffa99f);
+  color: #3a2c13;
+}
+
+.theme-dark .App-link {
+  color: #ffd700;
+}
+.theme-eye .App-link {
+  color: #b58900;
+}
+
+.theme-dark .glass {
+  background: rgba(30,30,40,0.7);
+  color: #f3f3f3;
+}
+.theme-eye .glass {
+  background: rgba(255, 245, 200, 0.7);
+  color: #3a2c13;
+}
