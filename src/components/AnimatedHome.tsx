@@ -194,9 +194,12 @@ export default function AnimatedHome() {
           {/* Animated Lesson Buttons */}
           <div className="space-y-4">
             {[
-              { icon: '🐾', text: t('animals'), color: 'from-pink-400 to-pink-600', delay: 1.2 },
-              { icon: '🎨', text: t('colors'), color: 'from-blue-400 to-blue-600', delay: 1.4 },
-              { icon: '🍎', text: t('food'), color: 'from-green-400 to-green-600', delay: 1.6 }
+              { icon: '🐾', text: t('animals'), color: 'from-pink-400 to-pink-600', delay: 1.2, path: '/animals' },
+              { icon: '🅰️', text: 'Alphabet', color: 'from-purple-400 to-purple-600', delay: 1.3, path: '/alphabet' },
+              { icon: '📝', text: 'Words', color: 'from-green-400 to-green-600', delay: 1.4, path: '/words' },
+              { icon: '📘', text: 'Writing Book', color: 'from-blue-400 to-blue-600', delay: 1.5, path: '/writing-book' },
+              { icon: '🎵', text: t('audio'), color: 'from-orange-400 to-orange-600', delay: 1.6, path: '/audio' },
+              { icon: '🏆', text: t('rewards'), color: 'from-yellow-400 to-yellow-600', delay: 1.7, path: '/rewards' }
             ].map((lesson, index) => (
               <motion.button
                 key={index}
@@ -209,7 +212,10 @@ export default function AnimatedHome() {
                   boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={handleButtonClick}
+                onClick={() => {
+                  handleButtonClick();
+                  window.location.href = lesson.path;
+                }}
               >
                 <motion.span
                   animate={{ rotate: [0, 10, -10, 0] }}

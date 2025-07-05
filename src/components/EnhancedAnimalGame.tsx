@@ -67,7 +67,7 @@ export default function EnhancedAnimalGame() {
     speechSynthesis.speak(utterance);
   };
 
-  const handleDragStart = (e: React.DragEvent, animalId: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, animalId: string) => {
     setDraggedAnimal(animalId);
     e.dataTransfer.effectAllowed = 'move';
     
@@ -271,7 +271,7 @@ export default function EnhancedAnimalGame() {
             </motion.h3>
             <div className="grid grid-cols-2 gap-4">
               {animals.map((animal, index) => (
-                <motion.div
+                <div
                   key={animal.id}
                   draggable={!matches[animal.id]}
                   onDragStart={(e) => handleDragStart(e, animal.id)}
@@ -280,11 +280,6 @@ export default function EnhancedAnimalGame() {
                       ? 'bg-green-200 opacity-50 scale-95' 
                       : 'bg-white shadow-lg hover:shadow-xl hover:scale-105'
                   } border-4 ${matches[animal.id] ? 'border-green-400' : 'border-blue-300'}`}
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6, type: "spring" }}
-                  whileHover={!matches[animal.id] ? { scale: 1.1, rotate: 5 } : {}}
-                  whileTap={!matches[animal.id] ? { scale: 0.95 } : {}}
                 >
                   <motion.div 
                     className="text-5xl mb-2"
@@ -306,7 +301,7 @@ export default function EnhancedAnimalGame() {
                       ✓ Matched!
                     </motion.div>
                   )}
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
@@ -395,15 +390,6 @@ export default function EnhancedAnimalGame() {
           💡 Drag the animal emojis to match them with their names!
         </motion.div>
       </div>
-
-      {/* CSS for shake animation */}
-      <style jsx>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
-        }
-      `}</style>
     </div>
   );
 } 

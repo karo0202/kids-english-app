@@ -10,6 +10,9 @@ import EnhancedAnimalGame from './components/EnhancedAnimalGame';
 import EnhancedAudioPlayer from './components/EnhancedAudioPlayer';
 import EnhancedRewardSystem from './components/EnhancedRewardSystem';
 import LanguageSwitcher from './components/LanguageSwitcher';
+import AlphabetWriting from './components/AlphabetWriting';
+import WordWriting from './components/WordWriting';
+import WritingBook from './components/WritingBook';
 
 // Import i18n configuration
 import './i18n';
@@ -22,6 +25,9 @@ function Navigation() {
   const navItems = [
     { path: '/', label: t('home'), icon: '🏠' },
     { path: '/animals', label: t('animals'), icon: '🐾' },
+    { path: '/alphabet', label: '🅰️ Alphabet', icon: '🅰️' },
+    { path: '/words', label: '📝 Words', icon: '📝' },
+    { path: '/writing-book', label: '📘 Book', icon: '📘' },
     { path: '/audio', label: t('audio'), icon: '🎵' },
     { path: '/rewards', label: t('rewards'), icon: '🏆' },
   ];
@@ -165,6 +171,27 @@ function Navigation() {
 
 function AppContent() {
   const location = useLocation();
+  const [writingEntries, setWritingEntries] = useState<Array<{
+    id: string;
+    type: 'letter' | 'word';
+    content: string;
+    timestamp: Date;
+    drawing?: string;
+    score: number;
+    category?: string;
+  }>>([]);
+
+  const addWritingEntry = (entry: {
+    id: string;
+    type: 'letter' | 'word';
+    content: string;
+    timestamp: Date;
+    drawing?: string;
+    score: number;
+    category?: string;
+  }) => {
+    setWritingEntries(prev => [...prev, entry]);
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -178,6 +205,14 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<AnimatedHome />} />
           <Route path="/animals" element={<EnhancedAnimalGame />} />
+          <Route path="/alphabet" element={<AlphabetWriting />} />
+          <Route path="/words" element={<WordWriting />} />
+          <Route path="/writing-book" element={
+            <WritingBook 
+              entries={writingEntries}
+              onAddEntry={addWritingEntry}
+            />
+          } />
           <Route path="/audio" element={
             <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 p-4">
               <div className="max-w-4xl mx-auto">
