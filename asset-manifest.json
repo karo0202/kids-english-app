@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/kids-english-app/static/css/main.bef31bc4.css",
-    "main.js": "/kids-english-app/static/js/main.62c56424.js",
+    "main.css": "/kids-english-app/static/css/main.76b30e96.css",
+    "main.js": "/kids-english-app/static/js/main.979fc576.js",
     "static/js/453.a1c93b9d.chunk.js": "/kids-english-app/static/js/453.a1c93b9d.chunk.js",
     "index.html": "/kids-english-app/index.html",
-    "main.bef31bc4.css.map": "/kids-english-app/static/css/main.bef31bc4.css.map",
-    "main.62c56424.js.map": "/kids-english-app/static/js/main.62c56424.js.map",
+    "main.76b30e96.css.map": "/kids-english-app/static/css/main.76b30e96.css.map",
+    "main.979fc576.js.map": "/kids-english-app/static/js/main.979fc576.js.map",
     "453.a1c93b9d.chunk.js.map": "/kids-english-app/static/js/453.a1c93b9d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bef31bc4.css",
-    "static/js/main.62c56424.js"
+    "static/css/main.76b30e96.css",
+    "static/js/main.979fc576.js"
   ]
 }
