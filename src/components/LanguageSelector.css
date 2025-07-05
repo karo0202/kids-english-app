@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Poppins:wght@700&display=swap');
+
+.font-kid {
+  font-family: 'Comic Neue', 'Poppins', sans-serif;
+}
+
+.language-btn, .language-list-item {
+  background: #f3e8ff;
+  border-radius: 9999px;
+  padding: 1.2em 1.5em;
+  margin: 0.5em 0;
+  font-size: 1.2em;
+  box-shadow: 0 2px 8px #e0c3fc55;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+}
+.language-btn.selected, .language-list-item.selected {
+  background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px #a18cd1aa;
+  transform: scale(1.08);
+}
+.language-btn:hover, .language-list-item:focus, .language-list-item:hover {
+  box-shadow: 0 6px 24px #fbc2eb99;
+  transform: scale(1.05);
+}
+.bg-pastel {
+  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+}
+.language-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.language-list-item {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1em;
+  width: 100%;
+}
+.flag {
+  font-size: 2em;
+  margin-right: 0.5em;
+}
+.lang-names {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.desc {
+  font-size: 0.9em;
+  color: #7c3aed;
+  margin-left: 1em;
+}
+.language-grid-fullscreen {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: 2em;
+} 

@@ -13,6 +13,7 @@ import LanguageSwitcher from './components/LanguageSwitcher';
 import AlphabetWriting from './components/AlphabetWriting';
 import WordWriting from './components/WordWriting';
 import WritingBook from './components/WritingBook';
+import LanguageSelector from './components/LanguageSelector';
 
 // Import i18n configuration
 import './i18n';
@@ -72,6 +73,7 @@ function Navigation() {
     { path: '/writing-book', label: '📘 Book', icon: '📘' },
     { path: '/audio', label: t('audio'), icon: '🎵' },
     { path: '/rewards', label: t('rewards'), icon: '🏆' },
+    { path: '/settings', label: t('settings') || 'Settings', icon: '⚙️' },
   ];
 
   return (
@@ -209,6 +211,16 @@ function Navigation() {
   );
 }
 
+function SettingsPage() {
+  const [lang, setLang] = useState(localStorage.getItem('language') || 'en');
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <h2 className="text-3xl font-bold mb-6">🌍 Change Language</h2>
+      <LanguageSelector view="grid" selectedLanguage={lang} onSelect={code => { setLang(code); window.location.reload(); }} />
+    </div>
+  );
+}
+
 function AppContent() {
   const location = useLocation();
   const [writingEntries, setWritingEntries] = useState<Array<{
@@ -286,6 +298,7 @@ function AppContent() {
             </div>
           } />
           <Route path="/rewards" element={<EnhancedRewardSystem />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
@@ -293,6 +306,15 @@ function AppContent() {
 }
 
 function App() {
+  const [showLang, setShowLang] = useState(() => !localStorage.getItem('language'));
+  if (showLang) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold mb-8">🌍 Choose Your Language!</h1>
+        <LanguageSelector view="fullscreen" onSelect={() => window.location.reload()} />
+      </div>
+    );
+  }
   return (
     <ThemeProvider>
       <Router>
